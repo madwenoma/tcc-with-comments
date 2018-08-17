@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mengyun.tcctransaction.sample.capital.infrastructure.dao.TradeOrderDao">
+
+    <resultMap id="result"
+               type="org.mengyun.tcctransaction.sample.capital.domain.entity.TradeOrder">
+        <id property="id" javaType="java.lang.Long" column="ID"/>
+        <result property="selfUserId" column="SELF_USER_ID"/>
+        <result property="oppositeUserId" column="OPPOSITE_USER_ID"/>
+        <result property="merchantOrderNo" column="MERCHANT_ORDER_NO"/>
+        <result property="amount" column="AMOUNT"/>
+        <result property="status" column="STATUS"/>
+        <result property="version" column="VERSION"/>
+    </resultMap>
+
+    <sql id="sql_select">
+        SELECT
+        id,
+        self_user_id,
+        opposite_user_id,
+        merchant_order_no,
+        amount,
+        status,
+        version
+        FROM
+        cap_trade_order
+    </sql>
+
+    <select id="findByMerchantOrderNo" resultMap="result">
+        <include refid="sql_select"/>
+        WHERE merchant_order_no = #{merchantOrderNo}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="org.mengyun.tcctransaction.sample.capital.domain.entity.TradeOrder">
+        INSERT INTO cap_trade_order
+        (
+        self_user_id,
+        opposite_user_id,
+        merchant_order_no,
+        amount,
+        status,
+        version
+        )
+        VALUES
+        (
+        #{selfUserId},
+        #{oppositeUserId},
+        #{merchantOrderNo},
+        #{amount},
+        #{status},
+        #{version}
+        )
+    </insert>
+
+    <update id="update" parameterType="org.mengyun.tcctransaction.sample.capital.domain.entity.TradeOrder">
+        UPDATE
+        cap_trade_order
+        SET
+        status = #{status},
+        version = #{version}
+        WHERE id = #{id} AND version = #{version}-1
+    </update>
+</mapper>
