@@ -55,4 +55,14 @@ public class CapitalAccount {
     public void cancelTransfer(BigDecimal amount) {
         transferTo(amount);
     }
+
+    @Override
+    public String toString() {
+        return "CapitalAccount{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", balanceAmount=" + balanceAmount +
+                ", transferAmount=" + transferAmount +
+                '}';
+    }
 }

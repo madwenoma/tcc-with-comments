@@ -1,43 +1,43 @@
-CREATE DATABASE `tcc_ord` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE tcc_ord;
-CREATE TABLE `ORD_ORDER` (
-  `ORDER_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PAYER_USER_ID` int(11) DEFAULT NULL,
-  `PAYEE_USER_ID` int(11) DEFAULT NULL,
-  `RED_PACKET_PAY_AMOUNT` decimal(10,0) DEFAULT NULL,
-  `CAPITAL_PAY_AMOUNT` decimal(10,0) DEFAULT NULL,
-  `STATUS` varchar(45) DEFAULT NULL,
-  `MERCHANT_ORDER_NO` varchar(45) NOT NULL,
-  `VERSION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ORDER_ID`),
-  UNIQUE KEY `MERCHANT_ORDER_NO_UNIQUE` (`MERCHANT_ORDER_NO`)
-) ENGINE=InnoDB AUTO_INCREMENT=1188 DEFAULT CHARSET=utf8;
+create database `tcc_ord` /*!40100 default character set utf8 */;
+use tcc_ord;
+create table `ord_order` (
+  `order_id` int(11) not null auto_increment,
+  `payer_user_id` int(11) default null,
+  `payee_user_id` int(11) default null,
+  `red_packet_pay_amount` decimal(10,0) default null,
+  `capital_pay_amount` decimal(10,0) default null,
+  `status` varchar(45) default null,
+  `merchant_order_no` varchar(45) not null,
+  `version` int(11) default null,
+  primary key (`order_id`),
+  unique key `merchant_order_no_unique` (`merchant_order_no`)
+) engine=innodb auto_increment=1188 default charset=utf8;
 
-CREATE TABLE `ORD_ORDER_LINE` (
-  `ORDER_LINE_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PRODUCT_ID` int(11) DEFAULT NULL,
-  `QUANTITY` decimal(10,0) DEFAULT NULL,
-  `UNIT_PRICE` decimal(10,0) DEFAULT NULL,
-  PRIMARY KEY (`ORDER_LINE_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+create table `ord_order_line` (
+  `order_line_id` int(11) not null auto_increment,
+  `product_id` int(11) default null,
+  `quantity` decimal(10,0) default null,
+  `unit_price` decimal(10,0) default null,
+  primary key (`order_line_id`)
+) engine=innodb auto_increment=1 default charset=utf8;
 
-CREATE TABLE `ORD_SHOP` (
-  `SHOP_ID` int(11) NOT NULL,
-  `OWNER_USER_ID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`SHOP_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+create table `ord_shop` (
+  `shop_id` int(11) not null,
+  `owner_user_id` int(11) default null,
+  primary key (`shop_id`)
+) engine=innodb auto_increment=1 default charset=utf8;
 
-CREATE TABLE `ORD_PRODUCT`(
-  `PRODUCT_ID` int(11) NOT NULL,
-  `SHOP_ID` int(11) NOT NULL,
-  `PRODUCT_NAME` VARCHAR(64) DEFAULT NULL ,
-  `PRICE` DECIMAL(10,0) DEFAULT NULL,
-  PRIMARY KEY (`PRODUCT_ID`)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+create table `ord_product`(
+  `product_id` int(11) not null,
+  `shop_id` int(11) not null,
+  `product_name` varchar(64) default null ,
+  `price` decimal(10,0) default null,
+  primary key (`product_id`)
+)engine=innodb auto_increment=1 default charset=utf8;
 
 
-INSERT INTO `ORD_SHOP` (`SHOP_ID`,`OWNER_USER_ID`) VALUES (1,1000);
+insert into `ord_shop` (`shop_id`,`owner_user_id`) values (1,1000);
 
-INSERT INTO `ORD_PRODUCT` (`PRODUCT_ID`,`SHOP_ID`,`PRODUCT_NAME`,`PRICE`) VALUES (1,1,'IPhone6S',5288);
-INSERT INTO `ORD_PRODUCT` (`PRODUCT_ID`,`SHOP_ID`,`PRODUCT_NAME`,`PRICE`) VALUES (2,1,'MAC Pro',10288);
-INSERT INTO `ORD_PRODUCT` (`PRODUCT_ID`,`SHOP_ID`,`PRODUCT_NAME`,`PRICE`) VALUES (3,1,'IWatch',2288);
+insert into `ord_product` (`product_id`,`shop_id`,`product_name`,`price`) values (1,1,'iphone6s',5288);
+insert into `ord_product` (`product_id`,`shop_id`,`product_name`,`price`) values (2,1,'mac pro',10288);
+insert into `ord_product` (`product_id`,`shop_id`,`product_name`,`price`) values (3,1,'iwatch',2288);

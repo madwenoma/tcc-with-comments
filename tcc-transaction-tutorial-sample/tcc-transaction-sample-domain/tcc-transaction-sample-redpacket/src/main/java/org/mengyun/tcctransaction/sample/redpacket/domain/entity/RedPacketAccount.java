@@ -47,4 +47,13 @@ public class RedPacketAccount {
     public void cancelTransfer(BigDecimal amount) {
         transferTo(amount);
     }
+
+    @Override
+    public String toString() {
+        return "RedPacketAccount{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", balanceAmount=" + balanceAmount +
+                '}';
+    }
 }

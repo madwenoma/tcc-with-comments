@@ -6,8 +6,7 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[order]%d %-5p [%c] %m%n"/>
-            <!--<param name="ConversionPattern" value="%-d{HH:mm:ssS} - %l %m%n"/>-->
+            <param name="ConversionPattern" value="[sample-http-capital]%d %-5p [%c] %m%n"/>
         </layout>
     </appender>
 
@@ -17,27 +16,9 @@
         <appender-ref ref="CONSOLE" />
     </appender>
 
-
-
-    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
-        <param name="Target" value="System.out"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p %d{MM-dd HH:mm:ss} %m  (%F:%L) \n" />
-        </layout>
-    </appender>
-    <category name="java.sql">
-        <priority value="debug" />
-        <appender-ref ref="CONSOLE"/>
-    </category>
-    <category name="com.ibatis">
-        <priority value="debug" />
-        <appender-ref ref="CONSOLE"/>
-    </category>
-
     <root>
         <level value="info"/>
         <appender-ref ref="asyncAppender"/>
     </root>
-
 
 </log4j:configuration>

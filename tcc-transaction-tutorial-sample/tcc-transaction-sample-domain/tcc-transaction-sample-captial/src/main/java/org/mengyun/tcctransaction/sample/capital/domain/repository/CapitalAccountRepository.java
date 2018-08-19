@@ -16,11 +16,12 @@ public class CapitalAccountRepository {
     CapitalAccountDao capitalAccountDao;
 
     public CapitalAccount findByUserId(long userId) {
-
+        System.out.println("CapitalAccountRepository.findByUserId");
         return capitalAccountDao.findByUserId(userId);
     }
 
     public void save(CapitalAccount capitalAccount) {
+        System.out.println("CapitalAccountRepository.save(capitalAccount)");
         int effectCount = capitalAccountDao.update(capitalAccount);
         if (effectCount < 1) {
             throw new InsufficientBalanceException();

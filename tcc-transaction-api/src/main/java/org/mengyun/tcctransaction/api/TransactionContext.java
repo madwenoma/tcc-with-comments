@@ -51,5 +51,12 @@ public class TransactionContext implements Serializable {
         return status;
     }
 
-
+    @Override
+    public String toString() {
+        return "TransactionContext{" +
+                "xid=" + xid +
+                ", status=" + status +
+                ", attachments=" + attachments +
+                '}';
+    }
 }

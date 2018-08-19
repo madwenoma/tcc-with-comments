@@ -16,11 +16,12 @@ public class TradeOrderRepository {
     TradeOrderDao tradeOrderDao;
 
     public void insert(TradeOrder tradeOrder) {
+        System.out.println("TradeOrderRepository  INSERT  red_trade_order");
         tradeOrderDao.insert(tradeOrder);
     }
 
     public void update(TradeOrder tradeOrder) {
-
+        System.out.println("TradeOrderRepository.update red_trade_order");
         tradeOrder.updateVersion();
         int effectCount = tradeOrderDao.update(tradeOrder);
         if (effectCount < 1) {
@@ -29,6 +30,7 @@ public class TradeOrderRepository {
     }
 
     public TradeOrder findByMerchantOrderNo(String merchantOrderNo) {
+        System.out.println("TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order");
         return tradeOrderDao.findByMerchantOrderNo(merchantOrderNo);
     }
 

@@ -36,6 +36,7 @@ public class TransactionManager {
     /**
      * 开始事务，说明这是一个根事务
      * TransactionType.ROOT
+     *
      * @return
      */
     public Transaction begin() {
@@ -48,6 +49,7 @@ public class TransactionManager {
 
     /**
      * 传播新事务
+     *
      * @param transactionContext
      * @return
      */
@@ -62,6 +64,7 @@ public class TransactionManager {
 
     /**
      * 根据事务上下文xid，找到已存在的事务（通常用于confirm阶段，找到try阶段创建的事务）
+     *
      * @param transactionContext
      * @return
      * @throws NoExistedTransactionException
@@ -80,6 +83,7 @@ public class TransactionManager {
 
     /**
      * 进行提交
+     *
      * @param asyncCommit 是否异步提交
      */
     public void commit(boolean asyncCommit) {
@@ -120,11 +124,13 @@ public class TransactionManager {
     }
 
     public void rollback(boolean asyncRollback) {
-
         final Transaction transaction = getCurrentTransaction();
+        logger.info("rollback ,current transaction is " + transaction);
         transaction.changeStatus(TransactionStatus.CANCELLING);
+        logger.info("rollback ,change status to canceling " + transaction);
 
         transactionRepository.update(transaction);
+        logger.info("rollback , update redis over");
 
         if (asyncRollback) {
 
@@ -160,6 +166,7 @@ public class TransactionManager {
         try {
             transaction.rollback();
             transactionRepository.delete(transaction);
+            logger.info("delete redis over");
         } catch (Throwable rollbackException) {
             logger.warn("compensable transaction rollback failed, recovery job will try to rollback later.", rollbackException);
             throw new CancellingException(rollbackException);
@@ -189,7 +196,7 @@ public class TransactionManager {
     }
 
     public void cleanAfterCompletion(Transaction transaction) {
-        System.out.println("cleanAfterCompletion LinkedList size:" + CURRENT.get().size());
+//        System.out.println("cleanAfterCompletion LinkedList size:" + CURRENT.get().size());
         if (isTransactionActive() && transaction != null) {
             Transaction currentTransaction = getCurrentTransaction();
             if (currentTransaction == transaction) {

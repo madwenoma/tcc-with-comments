@@ -1,6 +1,7 @@
 package org.mengyun.tcctransaction;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Created by changmingxie on 11/9/15.
@@ -41,5 +42,15 @@ public class InvocationContext implements Serializable {
 
     public Class[] getParameterTypes() {
         return parameterTypes;
+    }
+
+    @Override
+    public String toString() {
+        return "InvocationContext{" +
+                "targetClass=" + targetClass +
+                ", methodName='" + methodName + '\'' +
+                ", parameterTypes=" + Arrays.toString(parameterTypes) +
+                ", args=" + Arrays.toString(args) +
+                '}';
     }
 }

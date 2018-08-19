@@ -69,4 +69,14 @@ public class Participant implements Serializable {
         return cancelInvocationContext;
     }
 
+    @Override
+    public String toString() {
+        return "Participant{" +
+                "xid=" + xid +
+                ", confirmInvocationContext=" + confirmInvocationContext +
+                ", cancelInvocationContext=" + cancelInvocationContext +
+                ", terminator=" + terminator +
+                ", transactionContextEditorClass=" + transactionContextEditorClass +
+                '}';
+    }
 }

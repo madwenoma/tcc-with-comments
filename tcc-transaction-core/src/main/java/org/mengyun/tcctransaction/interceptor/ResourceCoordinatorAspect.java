@@ -21,6 +21,7 @@ public abstract class ResourceCoordinatorAspect {
 
     @Around("transactionContextCall()")
     public Object interceptTransactionContextMethod(ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println("ResourceCoordinatorAspect around....");
         return resourceCoordinatorInterceptor.interceptTransactionContextMethod(pjp);
     }
 

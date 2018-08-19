@@ -1,23 +1,23 @@
-CREATE DATABASE `tcc_red` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE tcc_red;
-CREATE TABLE `RED_RED_PACKET_ACCOUNT` (
-  `RED_PACKET_ACCOUNT_ID` int(11) NOT NULL,
-  `BALANCE_AMOUNT` decimal(10,0) DEFAULT NULL,
-  `USER_ID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`RED_PACKET_ACCOUNT_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+create database `tcc_red` /*!40100 default character set utf8 */;
+use tcc_red;
+create table `red_red_packet_account` (
+  `red_packet_account_id` int(11) not null,
+  `balance_amount` decimal(10,0) default null,
+  `user_id` int(11) default null,
+  primary key (`red_packet_account_id`)
+) engine=innodb auto_increment=1 default charset=utf8;
 
-CREATE TABLE `RED_TRADE_ORDER` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SELF_USER_ID` bigint(11) DEFAULT NULL,
-  `OPPOSITE_USER_ID` bigint(11) DEFAULT NULL,
-  `MERCHANT_ORDER_NO` varchar(45) NOT NULL,
-  `AMOUNT` decimal(10,0) DEFAULT NULL,
-  `STATUS` varchar(45) DEFAULT NULL,
-  `VERSION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `MERCHANT_ORDER_NO_UNIQUE` (`MERCHANT_ORDER_NO`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+create table `red_trade_order` (
+  `id` int(11) not null auto_increment,
+  `self_user_id` bigint(11) default null,
+  `opposite_user_id` bigint(11) default null,
+  `merchant_order_no` varchar(45) not null,
+  `amount` decimal(10,0) default null,
+  `status` varchar(45) default null,
+  `version` int(11) default null,
+  primary key (`id`),
+  unique key `merchant_order_no_unique` (`merchant_order_no`)
+) engine=innodb auto_increment=1 default charset=utf8;
 
-INSERT INTO `RED_RED_PACKET_ACCOUNT` (`RED_PACKET_ACCOUNT_ID`,`BALANCE_AMOUNT`,`USER_ID`) VALUES (1,950,1000);
-INSERT INTO `RED_RED_PACKET_ACCOUNT` (`RED_PACKET_ACCOUNT_ID`,`BALANCE_AMOUNT`,`USER_ID`) VALUES (2,500,2000);
+insert into `red_red_packet_account` (`red_packet_account_id`,`balance_amount`,`user_id`) values (1,950,1000);
+insert into `red_red_packet_account` (`red_packet_account_id`,`balance_amount`,`user_id`) values (2,500,2000);

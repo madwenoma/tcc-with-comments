@@ -1,66 +1,66 @@
-CREATE DATABASE `TCC` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE TCC;
-CREATE TABLE `TCC_TRANSACTION_CAP` (
-  `TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DOMAIN` varchar(100) DEFAULT NULL,
-  `GLOBAL_TX_ID` varbinary(32) NOT NULL,
-  `BRANCH_QUALIFIER` varbinary(32) NOT NULL,
-  `CONTENT` varbinary(8000) DEFAULT NULL,
-  `STATUS` int(11) DEFAULT NULL,
-  `TRANSACTION_TYPE` int(11) DEFAULT NULL,
-  `RETRIED_COUNT` int(11) DEFAULT NULL,
-  `CREATE_TIME` datetime DEFAULT NULL,
-  `LAST_UPDATE_TIME` datetime DEFAULT NULL,
-  `VERSION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`TRANSACTION_ID`),
-  UNIQUE KEY `UX_TX_BQ` (`GLOBAL_TX_ID`,`BRANCH_QUALIFIER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create database `tcc` /*!40100 default character set utf8 */;
+use tcc;
+create table `tcc_transaction_cap` (
+  `transaction_id` int(11) not null auto_increment,
+  `domain` varchar(100) default null,
+  `global_tx_id` varbinary(32) not null,
+  `branch_qualifier` varbinary(32) not null,
+  `content` varbinary(8000) default null,
+  `status` int(11) default null,
+  `transaction_type` int(11) default null,
+  `retried_count` int(11) default null,
+  `create_time` datetime default null,
+  `last_update_time` datetime default null,
+  `version` int(11) default null,
+  primary key (`transaction_id`),
+  unique key `ux_tx_bq` (`global_tx_id`,`branch_qualifier`)
+) engine=innodb default charset=utf8;
 
-CREATE TABLE `TCC_TRANSACTION_ORD` (
-  `TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DOMAIN` varchar(100) DEFAULT NULL,
-  `GLOBAL_TX_ID` varbinary(32) NOT NULL,
-  `BRANCH_QUALIFIER` varbinary(32) NOT NULL,
-  `CONTENT` varbinary(8000) DEFAULT NULL,
-  `STATUS` int(11) DEFAULT NULL,
-  `TRANSACTION_TYPE` int(11) DEFAULT NULL,
-  `RETRIED_COUNT` int(11) DEFAULT NULL,
-  `CREATE_TIME` datetime DEFAULT NULL,
-  `LAST_UPDATE_TIME` datetime DEFAULT NULL,
-  `VERSION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`TRANSACTION_ID`),
-  UNIQUE KEY `UX_TX_BQ` (`GLOBAL_TX_ID`,`BRANCH_QUALIFIER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table `tcc_transaction_ord` (
+  `transaction_id` int(11) not null auto_increment,
+  `domain` varchar(100) default null,
+  `global_tx_id` varbinary(32) not null,
+  `branch_qualifier` varbinary(32) not null,
+  `content` varbinary(8000) default null,
+  `status` int(11) default null,
+  `transaction_type` int(11) default null,
+  `retried_count` int(11) default null,
+  `create_time` datetime default null,
+  `last_update_time` datetime default null,
+  `version` int(11) default null,
+  primary key (`transaction_id`),
+  unique key `ux_tx_bq` (`global_tx_id`,`branch_qualifier`)
+) engine=innodb default charset=utf8;
 
-CREATE TABLE `TCC_TRANSACTION_RED` (
-  `TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DOMAIN` varchar(100) DEFAULT NULL,
-  `GLOBAL_TX_ID` varbinary(32) NOT NULL,
-  `BRANCH_QUALIFIER` varbinary(32) NOT NULL,
-  `CONTENT` varbinary(8000) DEFAULT NULL,
-  `STATUS` int(11) DEFAULT NULL,
-  `TRANSACTION_TYPE` int(11) DEFAULT NULL,
-  `RETRIED_COUNT` int(11) DEFAULT NULL,
-  `CREATE_TIME` datetime DEFAULT NULL,
-  `LAST_UPDATE_TIME` datetime DEFAULT NULL,
-  `VERSION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`TRANSACTION_ID`),
-  UNIQUE KEY `UX_TX_BQ` (`GLOBAL_TX_ID`,`BRANCH_QUALIFIER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table `tcc_transaction_red` (
+  `transaction_id` int(11) not null auto_increment,
+  `domain` varchar(100) default null,
+  `global_tx_id` varbinary(32) not null,
+  `branch_qualifier` varbinary(32) not null,
+  `content` varbinary(8000) default null,
+  `status` int(11) default null,
+  `transaction_type` int(11) default null,
+  `retried_count` int(11) default null,
+  `create_time` datetime default null,
+  `last_update_time` datetime default null,
+  `version` int(11) default null,
+  primary key (`transaction_id`),
+  unique key `ux_tx_bq` (`global_tx_id`,`branch_qualifier`)
+) engine=innodb default charset=utf8;
 
 
-CREATE TABLE `TCC_TRANSACTION_UT` (
-  `TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DOMAIN` varchar(100) DEFAULT NULL,
-  `GLOBAL_TX_ID` varbinary(32) NOT NULL,
-  `BRANCH_QUALIFIER` varbinary(32) NOT NULL,
-  `CONTENT` varbinary(8000) DEFAULT NULL,
-  `STATUS` int(11) DEFAULT NULL,
-  `TRANSACTION_TYPE` int(11) DEFAULT NULL,
-  `RETRIED_COUNT` int(11) DEFAULT NULL,
-  `CREATE_TIME` datetime DEFAULT NULL,
-  `LAST_UPDATE_TIME` datetime DEFAULT NULL,
-  `VERSION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`TRANSACTION_ID`),
-  UNIQUE KEY `UX_TX_BQ` (`GLOBAL_TX_ID`,`BRANCH_QUALIFIER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table `tcc_transaction_ut` (
+  `transaction_id` int(11) not null auto_increment,
+  `domain` varchar(100) default null,
+  `global_tx_id` varbinary(32) not null,
+  `branch_qualifier` varbinary(32) not null,
+  `content` varbinary(8000) default null,
+  `status` int(11) default null,
+  `transaction_type` int(11) default null,
+  `retried_count` int(11) default null,
+  `create_time` datetime default null,
+  `last_update_time` datetime default null,
+  `version` int(11) default null,
+  primary key (`transaction_id`),
+  unique key `ux_tx_bq` (`global_tx_id`,`branch_qualifier`)
+) engine=innodb default charset=utf8;

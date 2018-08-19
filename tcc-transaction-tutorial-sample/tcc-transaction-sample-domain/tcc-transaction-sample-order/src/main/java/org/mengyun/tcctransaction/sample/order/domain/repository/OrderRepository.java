@@ -22,6 +22,7 @@ public class OrderRepository {
     OrderLineDao orderLineDao;
 
     public void createOrder(Order order) {
+        System.out.println("OrderRepository createOrder");
         orderDao.insert(order);
 
         for (OrderLine orderLine : order.getOrderLines()) {
@@ -30,6 +31,7 @@ public class OrderRepository {
     }
 
     public void updateOrder(Order order) {
+        System.out.println("OrderRepository.updateOrder");
         order.updateVersion();
         int effectCount = orderDao.update(order);
 
@@ -39,6 +41,7 @@ public class OrderRepository {
     }
 
     public Order findByMerchantOrderNo(String merchantOrderNo) {
+        System.out.println("OrderRepository findByMerchantOrderNo");
         return orderDao.findByMerchantOrderNo(merchantOrderNo);
     }
 }

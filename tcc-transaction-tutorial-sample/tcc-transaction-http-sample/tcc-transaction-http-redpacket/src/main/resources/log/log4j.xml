@@ -17,8 +17,21 @@
     </appender>
 
     <root>
-        <level value="debug"/>
+        <level value="INFO"/>
         <appender-ref ref="asyncAppender"/>
     </root>
 
+
+
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %d{MM-dd HH:mm:ss} %m  (%F:%L) \n" />
+        </layout>
+    </appender>
+    <category name="java.sql">
+        <priority value="debug" />
+    </category>
+    <category name="com.ibatis">
+        <priority value="debug" />
+    </category>
 </log4j:configuration>

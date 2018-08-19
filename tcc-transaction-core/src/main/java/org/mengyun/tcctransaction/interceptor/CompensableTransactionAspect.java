@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
+ * Compensable:可补偿
  * Created by changmingxie on 10/30/15.
  */
 @Aspect
@@ -24,7 +25,7 @@ public abstract class CompensableTransactionAspect {
 
     @Around("compensableService()")
     public Object interceptCompensableMethod(ProceedingJoinPoint pjp) throws Throwable {
-
+        System.out.println("CompensableTransactionAspect around....");
         return compensableTransactionInterceptor.interceptCompensableMethod(pjp);
     }
 

@@ -5,6 +5,8 @@ import org.mengyun.tcctransaction.api.TransactionContext;
 import org.mengyun.tcctransaction.api.TransactionStatus;
 import org.mengyun.tcctransaction.api.TransactionXid;
 import org.mengyun.tcctransaction.common.TransactionType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.transaction.xa.Xid;
 import java.io.Serializable;
@@ -18,7 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by changmingxie on 10/26/15.
  */
 public class Transaction implements Serializable {
-
     private static final long serialVersionUID = 7291423944314337931L;
 
     private TransactionXid xid;
@@ -46,6 +47,7 @@ public class Transaction implements Serializable {
     /**
      * 根据事务上下文new出来的事务，说明是一个分支事务
      * xid是上下文的xid（root事务的xid？）
+     *
      * @param transactionContext
      */
     public Transaction(TransactionContext transactionContext) {
@@ -56,6 +58,7 @@ public class Transaction implements Serializable {
 
     /**
      * 根据type创建一个事务 xid为新生的
+     *
      * @param transactionType
      */
     public Transaction(TransactionType transactionType) {
@@ -92,14 +95,17 @@ public class Transaction implements Serializable {
 
 
     public void commit() {
-
+        System.out.println("commit,participants size is {}" + participants == null ? 0 : participants.size());
         for (Participant participant : participants) {
+            System.out.println("participant info:{}" + participant);
             participant.commit();
         }
     }
 
     public void rollback() {
+        System.out.println("rolback,participants size is {}" + participants == null ? 0 : participants.size());
         for (Participant participant : participants) {
+            System.out.println("participant info:{}" + participant);
             participant.rollback();
         }
     }
@@ -148,5 +154,18 @@ public class Transaction implements Serializable {
         this.lastUpdateTime = new Date();
     }
 
-
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "xid=" + xid +
+                ", status=" + status +
+                ", transactionType=" + transactionType +
+                ", retriedCount=" + retriedCount +
+                ", createTime=" + createTime +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", version=" + version +
+                ", participants=" + participants +
+                ", attachments=" + attachments +
+                '}';
+    }
 }
