@@ -5,8 +5,6 @@ import org.mengyun.tcctransaction.api.TransactionContext;
 import org.mengyun.tcctransaction.api.TransactionStatus;
 import org.mengyun.tcctransaction.api.TransactionXid;
 import org.mengyun.tcctransaction.common.TransactionType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.transaction.xa.Xid;
 import java.io.Serializable;
@@ -103,9 +101,10 @@ public class Transaction implements Serializable {
     }
 
     public void rollback() {
-        System.out.println("rolback,participants size is {}" + participants == null ? 0 : participants.size());
+//        System.out.println("rolback,participants size is {}" + participants == null ? 0 : participants.size());
+        System.out.println("Transaction rollback...");
         for (Participant participant : participants) {
-            System.out.println("participant info:{}" + participant);
+            System.out.println("participant cancel-method:" + participant.getCancelInvocationContext());
             participant.rollback();
         }
     }
@@ -166,6 +165,16 @@ public class Transaction implements Serializable {
                 ", version=" + version +
                 ", participants=" + participants +
                 ", attachments=" + attachments +
+                '}';
+    }
+
+    public String toSimpleString() {
+        return "Transaction{" +
+                "xid=" + xid +
+                ", status=" + status +
+                ", transactionType=" + transactionType +
+                ", createTime=" + createTime +
+                ", lastUpdateTime=" + lastUpdateTime +
                 '}';
     }
 }

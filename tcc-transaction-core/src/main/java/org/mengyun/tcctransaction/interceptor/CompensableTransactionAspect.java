@@ -26,7 +26,9 @@ public abstract class CompensableTransactionAspect {
     @Around("compensableService()")
     public Object interceptCompensableMethod(ProceedingJoinPoint pjp) throws Throwable {
         System.out.println("CompensableTransactionAspect around....");
-        return compensableTransactionInterceptor.interceptCompensableMethod(pjp);
+        Object object =  compensableTransactionInterceptor.interceptCompensableMethod(pjp);
+        System.out.println("CompensableTransactionAspect end");
+        return object;
     }
 
     public abstract int getOrder();

@@ -24,6 +24,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
 
     @Override
     public int create(Transaction transaction) {
+        System.out.println("TransactionRepository create:" + transaction.toSimpleString());
         int result = doCreate(transaction);
         if (result > 0) {
             putToCache(transaction);
@@ -33,6 +34,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
 
     @Override
     public int update(Transaction transaction) {
+        System.out.println("TransactionRepository update:" + transaction.toSimpleString());
         int result = 0;
 
         try {
@@ -53,6 +55,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
 
     @Override
     public int delete(Transaction transaction) {
+        System.out.println("TransactionRepository delete:" + transaction.toSimpleString());
         int result = 0;
 
         try {

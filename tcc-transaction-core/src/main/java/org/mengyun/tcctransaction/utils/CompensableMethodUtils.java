@@ -28,13 +28,17 @@ public class CompensableMethodUtils {
     }
 
     public static MethodType calculateMethodType(Propagation propagation, boolean isTransactionActive, TransactionContext transactionContext) {
-
+        //REQUIRED且当前threadlocal里有事务且事务上下文不为空
+        //或 事务隔离级别为REQUIRES_NEW
+        //以上两种是root事务
         if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && transactionContext == null) ||
                 propagation.equals(Propagation.REQUIRES_NEW)) {
             return MethodType.ROOT;
         } else if ((propagation.equals(Propagation.REQUIRED) || propagation.equals(Propagation.MANDATORY)) && !isTransactionActive && transactionContext != null) {
+            //REQUIRED或MANDATORY隔离级别，且当前threadlocal里有事务且事务上下文不为空
             return MethodType.PROVIDER;
         } else {
+            //其他返回NORMAL TODO 其他都包含哪些情况
             return MethodType.NORMAL;
         }
     }

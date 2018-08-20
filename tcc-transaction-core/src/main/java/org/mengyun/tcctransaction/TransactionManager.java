@@ -125,9 +125,9 @@ public class TransactionManager {
 
     public void rollback(boolean asyncRollback) {
         final Transaction transaction = getCurrentTransaction();
-        logger.info("rollback ,current transaction is " + transaction);
+        logger.info("rollback ,current transaction is ");
         transaction.changeStatus(TransactionStatus.CANCELLING);
-        logger.info("rollback ,change status to canceling " + transaction);
+        logger.info("rollback ,change status to canceling ");
 
         transactionRepository.update(transaction);
         logger.info("rollback , update redis over");
