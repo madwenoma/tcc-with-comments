@@ -1,0 +1,275 @@
+order try make payment called. 		time seq:2018-08-18 16:43:07
+
+capital try record called. 			time seq:2018-08-18 16:43:09
+
+red packet try record called. 		time seq:2018-08-18 16:43:10
+
+order confirm make payment called. 	time seq:2018-08-18 16:43:11
+
+capital confirm record called. 		time seq:2018-08-18 16:43:12
+
+red packet confirm record called. 	time seq:2018-08-18 16:43:14
+
+
+capital TradeOrderRepository findByMerchantOrderNo
+ capital try record called. time seq:2018-08-18 19:14:01
+ 根据订单号查询订单null
+ 订单为空，新生成订单TradeOrder{id=0, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='8fb1bf13-f19f-44cd-a714-7a95550d5e80', amount=2238, status='DRAFT', version=1}，开始插入
+capital TradeOrderRepository insert
+CapitalAccountRepository.findByUserId
+CapitalAccountRepository.save(capitalAccount)
+ 根据dto传来的userid，查询到用户账户CapitalAccount{id=2, userId=2000, balanceAmount=3286, transferAmount=-2238}，开始更新账户信息
+ capital record over
+
+CapitalAccountRepository.findByUserId
+
+capital TradeOrderRepository findByMerchantOrderNo
+ capital confirm record called. time seq:2018-08-18 19:14:05
+capital update tradeOrder
+ 根据dto传来的订单号，查询到交易记录TradeOrder{id=3, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='8fb1bf13-f19f-44cd-a714-7a95550d5e80', amount=2238, status='DRAFT', version=1}，开始confirm，更新交易记录状态为confirm
+CapitalAccountRepository.findByUserId
+CapitalAccountRepository.save(capitalAccount)
+ 查询到账户信息CapitalAccount{id=1, userId=1000, balanceAmount=16714, transferAmount=2238}，准备扣钱，save账户信息
+ capital confirm end
+
+==========================================================
+
+TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order
+ red packet try record called. time seq:2018-08-18 19:14:03
+ 根据订单号查询订单null
+TradeOrderRepository  INSERT  red_trade_order
+ 订单为空，新生成订单TradeOrder{id=0, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='8fb1bf13-f19f-44cd-a714-7a95550d5e80', amount=50, status='DRAFT', version=1}，开始insert交易记录
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+RedPacketAccountRepository.save(red_red_packet_account)
+ 根据dto传来的userid，查询到用户账户RedPacketAccount{id=2, userId=2000, balanceAmount=350}，开始更新账户信息
+ red packet record end
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+
+TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order
+ red packet confirm record called. time seq:2018-08-18 19:14:06
+TradeOrderRepository.update red_trade_order
+ 根据dto传来的订单号，查询到交易记录TradeOrder{id=3, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='8fb1bf13-f19f-44cd-a714-7a95550d5e80', amount=50, status='DRAFT', version=1}，开始confirm，更新交易记录状态为confirm
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+RedPacketAccountRepository.save(red_red_packet_account)
+ 查询到红包信息RedPacketAccount{id=1, userId=1000, balanceAmount=1100}，准备扣红包，save红包信息
+ redpacket confirm end
+
+===========================================
+OrderRepository createOrder
+registerTransaction LinkedList size:0
+OrderRepository.updateOrder
+order try make payment called.time seq:2018-08-18 19:13:59
+order status DRAFT，begin to updateOrder
+OrderRepository findByMerchantOrderNo
+
+OrderRepository findByMerchantOrderNo
+order confirm make payment called. time seq:2018-08-18 19:14:04
+OrderRepository.updateOrder
+order status is paying, begin to confirm update order
+confirmMakePayment end
+
+
+
+----------------------------------------------------------------------------------------
+capital TradeOrderRepository findByMerchantOrderNo
+capital try record called. time seq:2018-08-18 19:32:23
+根据订单号查询交易记录null
+capital TradeOrderRepository insert
+交易记录为空，新生成交易记录TradeOrder{id=0, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='10eaed34-ddf5-48b5-975f-59c5ca4e2bd8', amount=2238, status='DRAFT', version=1}，开始插入
+CapitalAccountRepository.findByUserId
+CapitalAccountRepository.save(capitalAccount)
+根据dto传来的userid，查询到用户账户CapitalAccount{id=2, userId=2000, balanceAmount=1048, transferAmount=-2238}，开始更新账户信息
+capital record over
+capital TradeOrderRepository findByMerchantOrderNo
+
+capital cancel record called. time seq:2018-08-18 19:32:26
+capital update tradeOrder
+根据dot 订单号查询交易记录TradeOrder{id=4, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='10eaed34-ddf5-48b5-975f-59c5ca4e2bd8', amount=2238, status='DRAFT', version=1}，并确认其状态为DRAFT（confirm失败）
+CapitalAccountRepository.findByUserId
+CapitalAccountRepository.save(capitalAccount)
+补偿之前，账户信息CapitalAccount{id=2, userId=2000, balanceAmount=1048, transferAmount=0}
+回退账户金额CapitalAccount{id=2, userId=2000, balanceAmount=3286, transferAmount=2238}，更新到db
+capital cancle end
+
+
+-------------------------------------------------------------------------------------------------
+TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order
+red packet try record called. time seq:2018-08-18 19:32:24
+TradeOrderRepository  INSERT  red_trade_order
+根据订单号查询交易记录null
+交易记录为空，新生成交易记录TradeOrder{id=0, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='10eaed34-ddf5-48b5-975f-59c5ca4e2bd8', amount=50, status='DRAFT', version=1}，开始insert交易记录
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+RedPacketAccountRepository.save(red_red_packet_account)
+根据dto传来的userid，查询到用户账户RedPacketAccount{id=2, userId=2000, balanceAmount=300}，开始更新账户信息
+red packet record end
+
+red packet cancel record called. time seq:2018-08-18 19:32:27
+TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order
+TradeOrderRepository.update red_trade_order
+redpacket 根据dot 订单号查询交易记录TradeOrder{id=4, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='10eaed34-ddf5-48b5-975f-59c5ca4e2bd8', amount=50, status='DRAFT', version=1}，并确认其状态为DRAFT（confirm失败）
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+RedPacketAccountRepository.save(red_red_packet_account)
+补偿之前，红包信息RedPacketAccount{id=2, userId=2000, balanceAmount=300}
+回退红包金额RedPacketAccount{id=2, userId=2000, balanceAmount=350}，更新到db
+
+
+---------------------------------------------------------------------------
+
+[order]2018-08-19 08:42:55,000 ERROR [TransactionRecovery] recover failed with max retry count,will not try 
+again. txid:2aca224f-368a-3525-a4f3-570c4d340f47:a334b7a8-5bd6-33c0-9506-efc5ab8cb639, status:3,
+retried count:31,transaction content:{"attachments":{},"createTime":1534602166937,"lastUpdateTime":
+1534602355000,"participants":[
+
+{"cancelInvocationContext":{"args":[{"capitalPayAmount":2238,"id":1194,
+"merchantOrderNo":"b122e3ca-37f0-4dc7-9262-65135ced627c","orderLines":[{"id":7,"productId":3,"quantity":1,
+"totalAmount":2288,"unitPrice":2288}],"payeeUserId":1000,"payerUserId":2000,"redPacketPayAmount":50,
+"status":"PAYING","totalAmount":2288,"version":2},50,2238],"methodName":"cancelMakePayment","parameterTypes":
+["org.mengyun.tcctransaction.sample.order.domain.entity.Order","java.math.BigDecimal","java.math.BigDecimal"],
+"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.PaymentServiceImpl"},
+"confirmInvocationContext":{"args":[{"$ref":"$.participants[0].cancelInvocationContext.args.null"},50,2238],
+"methodName":"confirmMakePayment","parameterTypes":["org.mengyun.tcctransaction.sample.order.domain.entity.Order",
+"java.math.BigDecimal","java.math.BigDecimal"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.PaymentServiceImpl"},
+"terminator":{},"xid":{"branchQualifier":"X8pOU9G9RTSGM/DMaKwR/w==","formatId":1,"globalTransactionId":"SHp4duWFQweQFJjyLV/5bQ=="}},
+
+
+{"cancelInvocationContext":{"args":[{"attachments":{},"status":1,"xid":{"branchQualifier":"JffXx3fHT66dYS+ppaxmug==",
+"formatId":1,"globalTransactionId":"SHp4duWFQweQFJjyLV/5bQ=="}},{"amount":2238,"merchantOrderNo":"b122e3ca-37f0-4dc7-9262-65135ced627c",
+"oppositeUserId":1000,"orderTitle":"order no:b122e3ca-37f0-4dc7-9262-65135ced627c","selfUserId":2000}],
+"methodName":"record","parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext",
+"org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto"],"targetClass":
+"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},"confirmInvocationContext":
+{"args":[{"$ref":"$.participants[1].cancelInvocationContext.args.null"},{"$ref":"$.participants[1].cancelInvocationContext.args[1]"}],
+"methodName":"record","parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext",
+"org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},
+"terminator":{},"xid":{"branchQualifier":"JffXx3fHT66dYS+ppaxmug==","formatId":1,
+"globalTransactionId":"SHp4duWFQweQFJjyLV/5bQ=="}},
+
+{"cancelInvocationContext":{"args":[{"attachments":{},
+"status":1,"xid":{"branchQualifier":"YL1Z7ZS5TIGc7wQ6SUHJiA==","formatId":1,"globalTransactionId":"SHp4duWFQweQFJjyLV/5bQ=="}},
+{"amount":50,"merchantOrderNo":"b122e3ca-37f0-4dc7-9262-65135ced627c","oppositeUserId":1000,
+"orderTitle":"order no:b122e3ca-37f0-4dc7-9262-65135ced627c","selfUserId":2000}],"methodName":"record",
+"parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext","org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto"],
+"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},
+"confirmInvocationContext":{"args":[{"$ref":"$.participants[2].cancelInvocationContext.args.null"},
+{"$ref":"$.participants[2].cancelInvocationContext.args[1]"}],"methodName":"record","parameterTypes":
+["org.mengyun.tcctransaction.api.TransactionContext","org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto"],
+"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},"terminator":{},
+"xid":{"branchQualifier":"YL1Z7ZS5TIGc7wQ6SUHJiA==","formatId":1,"globalTransactionId":"SHp4duWFQweQFJjyLV/5bQ=="}}
+],
+
+"retriedCount":31,"status":"CANCELLING","transactionType":"ROOT","version":36,"xid":{"branchQualifier":"FVXSHIsKTRqxN7PXpphEyA==",
+"formatId":1,"globalTransactionId":"SHp4duWFQweQFJjyLV/5bQ=="}}
+==================================================================================================
+redpacket
+
+CompensableTransactionAspect around....
+[CompensableTransactionInterceptor] transactionContext is TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=1, attachments={}}
+[CompensableTransactionInterceptor] method type isPROVIDER
+[CompensableTransactionInterceptor] providerMethodProceed begin...
+registerTransaction LinkedList size:0
+ResourceCoordinatorAspect around....
+TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order
+[RedPacketTradeOrderServiceImpl] red packet try record called. time seq:2018-08-19 09:19:10
+TradeOrderRepository  INSERT  red_trade_order
+[RedPacketTradeOrderServiceImpl] 根据订单号查询交易记录null
+[RedPacketTradeOrderServiceImpl] 交易记录为空，新生成交易记录TradeOrder{id=0, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='c2e755a1-89c0-43fd-b1a8-244dff134c28', amount=50, status='DRAFT', version=1}，开始insert交易记录
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+RedPacketAccountRepository.save(red_red_packet_account)
+[RedPacketTradeOrderServiceImpl] 根据dto传来的userid，查询到用户账户RedPacketAccount{id=2, userId=2000, balanceAmount=300}，开始更新账户信息
+[RedPacketTradeOrderServiceImpl] red packet record end
+CompensableTransactionAspect around....
+[CompensableTransactionInterceptor] transactionContext is TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=3, attachments={}}
+[CompensableTransactionInterceptor] method type isPROVIDER
+[CompensableTransactionInterceptor] providerMethodProceed begin...
+registerTransaction LinkedList size:0
+[TransactionManager] rollback ,current transaction is Transaction{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=CANCELLING, transactionType=BRANCH, retriedCount=0, createTime=Sun Aug 19 09:19:08 CST 2018, lastUpdateTime=Sun Aug 19 09:19:09 CST 2018, version=2, participants=[Participant{xid=5702a1b6-16e3-3149-a015-9b3f77595936:da005602-baf4-3703-8c3c-13021d4d33b3, confirmInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.redpacket.api.RedPacketTradeOrderService, methodName='confirmRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto@9943d9]}, cancelInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.redpacket.api.RedPacketTradeOrderService, methodName='cancelRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto@9943d9]}, terminator=org.mengyun.tcctransaction.Terminator@1ee4e9d, transactionContextEditorClass=class org.mengyun.tcctransaction.context.MethodTransactionContextEditor}], attachments={}}
+[TransactionManager] rollback ,change status to canceling Transaction{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=CANCELLING, transactionType=BRANCH, retriedCount=0, createTime=Sun Aug 19 09:19:08 CST 2018, lastUpdateTime=Sun Aug 19 09:19:09 CST 2018, version=2, participants=[Participant{xid=5702a1b6-16e3-3149-a015-9b3f77595936:da005602-baf4-3703-8c3c-13021d4d33b3, confirmInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.redpacket.api.RedPacketTradeOrderService, methodName='confirmRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto@9943d9]}, cancelInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.redpacket.api.RedPacketTradeOrderService, methodName='cancelRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto@9943d9]}, terminator=org.mengyun.tcctransaction.Terminator@1ee4e9d, transactionContextEditorClass=class org.mengyun.tcctransaction.context.MethodTransactionContextEditor}], attachments={}}
+1
+participant info:{}Participant{xid=5702a1b6-16e3-3149-a015-9b3f77595936:da005602-baf4-3703-8c3c-13021d4d33b3,
+ confirmInvocationContext=InvocationContext{targetClass=interface 
+ 	org.mengyun.tcctransaction.sample.http.redpacket.api.RedPacketTradeOrderService, 
+ 	methodName='confirmRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, 
+ 	class org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto], 
+ 	args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd,
+ 		status=1, attachments={}}, 
+ 		org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto@9943d9]},
+ 		 cancelInvocationContext=InvocationContext{targetClass=interface 
+ 		 	org.mengyun.tcctransaction.sample.http.redpacket.api.RedPacketTradeOrderService, 
+ 		 	methodName='cancelRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext,
+ 		 	 class org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto], 
+ 		 	 args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:e6c5bc9f-d832-31bd-b490-55549a6a1dbd, 
+ 		 	 	status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto@9943d9]}, 
+ 		 	 	terminator=org.mengyun.tcctransaction.Terminator@1ee4e9d, transactionContextEditorClass=class 
+ 		 	 	org.mengyun.tcctransaction.context.MethodTransactionContextEditor}
+[TransactionManager] rollback , update redis over
+red packet cancel record called. time seq:2018-08-19 09:19:13
+TradeOrderRepository.findByMerchantOrderNo FROM red_trade_order
+TradeOrderRepository.update red_trade_order
+[RedPacketTradeOrderServiceImpl] redpacket 根据dto 订单号查询交易记录TradeOrder{id=8, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='c2e755a1-89c0-43fd-b1a8-244dff134c28', amount=50, status='DRAFT', version=1}，并确认其状态为DRAFT（confirm失败）
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+RedPacketAccountRepository.save(red_red_packet_account)
+[RedPacketTradeOrderServiceImpl] 补偿之前，红包信息RedPacketAccount{id=2, userId=2000, balanceAmount=300}
+[RedPacketTradeOrderServiceImpl] 回退红包金额RedPacketAccount{id=2, userId=2000, balanceAmount=350}，更新到db
+[TransactionManager] delete redis over
+RedPacketAccountRepository.findByUserId FROM red_red_packet_account
+=================================================================================================
+CompensableTransactionAspect around....
+[CompensableTransactionInterceptor] transactionContext is TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}
+[CompensableTransactionInterceptor] method type isPROVIDER
+[CompensableTransactionInterceptor] providerMethodProceed begin...
+registerTransaction LinkedList size:0
+ResourceCoordinatorAspect around....
+capital TradeOrderRepository findByMerchantOrderNo
+CapitalTradeOrderServiceImpl] capital try record called. time seq:2018-08-19 09:19:08
+CapitalTradeOrderServiceImpl] 根据订单号查询交易记录null
+capital TradeOrderRepository insert
+CapitalTradeOrderServiceImpl] 交易记录为空，新生成交易记录TradeOrder{id=0, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='c2e755a1-89c0-43fd-b1a8-244dff134c28', amount=2238, status='DRAFT', version=1}，开始插入
+CapitalAccountRepository.findByUserId
+CapitalAccountRepository.save(capitalAccount)
+CapitalTradeOrderServiceImpl] 根据dto传来的userid，查询到用户账户CapitalAccount{id=2, userId=2000, balanceAmount=30622, transferAmount=-2238}，开始更新账户信息
+CapitalTradeOrderServiceImpl] capital record over
+CompensableTransactionAspect around....
+registerTransaction LinkedList size:0
+[CompensableTransactionInterceptor] transactionContext is TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=3, attachments={}}
+[CompensableTransactionInterceptor] method type isPROVIDER
+[CompensableTransactionInterceptor] providerMethodProceed begin...
+[TransactionManager] rollback ,current transaction is Transaction{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=CANCELLING, transactionType=BRANCH, retriedCount=0, createTime=Sun Aug 19 09:19:07 CST 2018, lastUpdateTime=Sun Aug 19 09:19:07 CST 2018, version=2, participants=[Participant{xid=5702a1b6-16e3-3149-a015-9b3f77595936:5a26a97c-18b0-3a91-83de-a2383c0cf15a, confirmInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.capital.api.CapitalTradeOrderService, methodName='confirmRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto@1865ca3]}, cancelInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.capital.api.CapitalTradeOrderService, methodName='cancelRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto@1865ca3]}, terminator=org.mengyun.tcctransaction.Terminator@d4c378, transactionContextEditorClass=class org.mengyun.tcctransaction.context.MethodTransactionContextEditor}], attachments={}}
+[TransactionManager] rollback ,change status to canceling Transaction{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=CANCELLING, transactionType=BRANCH, retriedCount=0, createTime=Sun Aug 19 09:19:07 CST 2018, lastUpdateTime=Sun Aug 19 09:19:07 CST 2018, version=2, participants=[Participant{xid=5702a1b6-16e3-3149-a015-9b3f77595936:5a26a97c-18b0-3a91-83de-a2383c0cf15a, confirmInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.capital.api.CapitalTradeOrderService, methodName='confirmRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto@1865ca3]}, cancelInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.capital.api.CapitalTradeOrderService, methodName='cancelRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto@1865ca3]}, terminator=org.mengyun.tcctransaction.Terminator@d4c378, transactionContextEditorClass=class org.mengyun.tcctransaction.context.MethodTransactionContextEditor}], attachments={}}
+[TransactionManager] rollback , update redis over
+1
+participant info:{}Participant{xid=5702a1b6-16e3-3149-a015-9b3f77595936:5a26a97c-18b0-3a91-83de-a2383c0cf15a, confirmInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.capital.api.CapitalTradeOrderService, methodName='confirmRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto@1865ca3]}, cancelInvocationContext=InvocationContext{targetClass=interface org.mengyun.tcctransaction.sample.http.capital.api.CapitalTradeOrderService, methodName='cancelRecord', parameterTypes=[class org.mengyun.tcctransaction.api.TransactionContext, class org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto], args=[TransactionContext{xid=5702a1b6-16e3-3149-a015-9b3f77595936:783dd245-242e-3a57-8c21-da930260914c, status=1, attachments={}}, org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto@1865ca3]}, terminator=org.mengyun.tcctransaction.Terminator@d4c378, transactionContextEditorClass=class org.mengyun.tcctransaction.context.MethodTransactionContextEditor}
+capital TradeOrderRepository findByMerchantOrderNo
+CapitalTradeOrderServiceImpl] capital cancel record called. time seq:2018-08-19 09:19:12
+capital update tradeOrder
+CapitalTradeOrderServiceImpl] 根据dot 订单号查询交易记录TradeOrder{id=8, selfUserId=2000, oppositeUserId=1000, merchantOrderNo='c2e755a1-89c0-43fd-b1a8-244dff134c28', amount=2238, status='DRAFT', version=1}，并确认其状态为DRAFT（confirm失败）
+CapitalAccountRepository.findByUserId
+CapitalAccountRepository.save(capitalAccount)
+CapitalTradeOrderServiceImpl] 补偿之前，账户信息CapitalAccount{id=2, userId=2000, balanceAmount=30622, transferAmount=0}
+CapitalTradeOrderServiceImpl] 回退账户金额CapitalAccount{id=2, userId=2000, balanceAmount=32860, transferAmount=2238}，更新到db
+CapitalTradeOrderServiceImpl] capital cancle end
+[TransactionManager] delete redis over
+CapitalAccountRepository.findByUserId
+=================================================================================================\
+
+OrderRepository createOrder
+CompensableTransactionAspect around....
+[order]2018-08-19 09:19:06,828 INFO  [CompensableTransactionInterceptor] transactionContext is null
+[order]2018-08-19 09:19:06,828 INFO  [CompensableTransactionInterceptor] method type isROOT
+[order]2018-08-19 09:19:06,828 INFO  [CompensableTransactionInterceptor] rootMethodProceed begin...
+registerTransaction LinkedList size:0
+ResourceCoordinatorAspect around....
+OrderRepository.updateOrder
+[order]2018-08-19 09:19:07,265 INFO  [org.mengyun.tcctransaction.sample.http.order.service.PaymentServiceImpl] order try make payment called.time seq:2018-08-19 09:19:07
+[order]2018-08-19 09:19:07,265 INFO  [org.mengyun.tcctransaction.sample.http.order.service.PaymentServiceImpl] order status DRAFT，begin to updateOrder
+CompensableTransactionAspect around....
+[order]2018-08-19 09:19:07,265 INFO  [CompensableTransactionInterceptor] transactionContext is null
+ResourceCoordinatorAspect around....
+[order]2018-08-19 09:19:07,265 INFO  [CompensableTransactionInterceptor] method type isNORMAL
+org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy@11e9c19
+CompensableTransactionAspect around....
+ResourceCoordinatorAspect around....
+[order]2018-08-19 09:19:08,890 INFO  [CompensableTransactionInterceptor] transactionContext is null
+[order]2018-08-19 09:19:08,890 INFO  [CompensableTransactionInterceptor] method type isNORMAL
+rootMethodProceed异常，开始回滚
+[order]2018-08-19 09:19:10,515 WARN  [CompensableTransactionInterceptor] compensable transaction trying failed. transaction content:{"attachments":{},"createTime":1534641546828,"lastUpdateTime":1534641548890,"participants":[{"cancelInvocationContext":{"args":[{"capitalPayAmount":2238,"id":1198,"merchantOrderNo":"c2e755a1-89c0-43fd-b1a8-244dff134c28","orderLines":[{"id":11,"productId":3,"quantity":1,"totalAmount":2288,"unitPrice":2288}],"payeeUserId":1000,"payerUserId":2000,"redPacketPayAmount":50,"status":"PAYING","totalAmount":2288,"version":2},50,2238],"methodName":"cancelMakePayment","parameterTypes":["org.mengyun.tcctransaction.sample.order.domain.entity.Order","java.math.BigDecimal","java.math.BigDecimal"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.PaymentServiceImpl"},"confirmInvocationContext":{"args":[{"$ref":"$.participants[0].cancelInvocationContext.args.null"},50,2238],"methodName":"confirmMakePayment","parameterTypes":["org.mengyun.tcctransaction.sample.order.domain.entity.Order","java.math.BigDecimal","java.math.BigDecimal"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.PaymentServiceImpl"},"terminator":{},"xid":{"branchQualifier":"Z+zOu2MhRfK6sVvLKKsajA==","formatId":1,"globalTransactionId":"H1OROOQPQNC5JUcDnqtCEg=="}},{"cancelInvocationContext":{"args":[{"attachments":{},"status":1,"xid":{"branchQualifier":"HXX/b60xR1u/UtETEKVNzA==","formatId":1,"globalTransactionId":"H1OROOQPQNC5JUcDnqtCEg=="}},{"amount":2238,"merchantOrderNo":"c2e755a1-89c0-43fd-b1a8-244dff134c28","oppositeUserId":1000,"orderTitle":"order no:c2e755a1-89c0-43fd-b1a8-244dff134c28","selfUserId":2000}],"methodName":"record","parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext","org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},"confirmInvocationContext":{"args":[{"$ref":"$.participants[1].cancelInvocationContext.args.null"},{"$ref":"$.participants[1].cancelInvocationContext.args[1]"}],"methodName":"record","parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext","org.mengyun.tcctransaction.sample.http.capital.api.dto.CapitalTradeOrderDto"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},"terminator":{},"xid":{"branchQualifier":"HXX/b60xR1u/UtETEKVNzA==","formatId":1,"globalTransactionId":"H1OROOQPQNC5JUcDnqtCEg=="}},{"cancelInvocationContext":{"args":[{"attachments":{},"status":1,"xid":{"branchQualifier":"es5YVi/6R7unlSSKzwvUxQ==","formatId":1,"globalTransactionId":"H1OROOQPQNC5JUcDnqtCEg=="}},{"amount":50,"merchantOrderNo":"c2e755a1-89c0-43fd-b1a8-244dff134c28","oppositeUserId":1000,"orderTitle":"order no:c2e755a1-89c0-43fd-b1a8-244dff134c28","selfUserId":2000}],"methodName":"record","parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext","org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},"confirmInvocationContext":{"args":[{"$ref":"$.participants[2].cancelInvocationContext.args.null"},{"$ref":"$.participants[2].cancelInvocationContext.args[1]"}],"methodName":"record","parameterTypes":["org.mengyun.tcctransaction.api.TransactionContext","org.mengyun.tcctransaction.sample.http.redpacket.api.dto.RedPacketTradeOrderDto"],"targetClass":"org.mengyun.tcctransaction.sample.http.order.service.TradeOrderServiceProxy"},"terminator":{},"xid":{"branchQualifier":"es5YVi/6R7unlSSKzwvUxQ==","formatId":1,"globalTransactionId":"H1OROOQPQNC5JUcDnqtCEg=="}}],"retriedCount":0,"status":"TRYING","transactionType":"ROOT","version":4,"xid":{"branchQualifier":"Xd+rd/83RRegt0+P7VhVJw==","formatId":1,"globalTransactionId":"H1OROOQPQNC5JUcDnqtCEg=="}}
+java.lang.ArithmeticException: / by zero
