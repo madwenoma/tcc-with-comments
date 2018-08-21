@@ -42,16 +42,17 @@ public class TransactionRecovery {
     }
 
     private void recoverErrorTransactions(List<Transaction> transactions) {
-
+        System.out.println("recoverErrorTransactions");
 
         for (Transaction transaction : transactions) {
-
+            //超过最大重试次数 不再尝试恢复
             if (transaction.getRetriedCount() > transactionConfigurator.getRecoverConfig().getMaxRetryCount()) {
 
                 logger.error(String.format("recover failed with max retry count,will not try again. txid:%s, status:%s,retried count:%d,transaction content:%s", transaction.getXid(), transaction.getStatus().getId(), transaction.getRetriedCount(), JSON.toJSONString(transaction)));
                 continue;
             }
 
+            //分支事务超时
             if (transaction.getTransactionType().equals(TransactionType.BRANCH)
                     && (transaction.getCreateTime().getTime() +
                     transactionConfigurator.getRecoverConfig().getMaxRetryCount() *
@@ -62,17 +63,19 @@ public class TransactionRecovery {
             
             try {
                 transaction.addRetriedCount();
-
+                //当前事务confirming阶段 尝试提交
                 if (transaction.getStatus().equals(TransactionStatus.CONFIRMING)) {
 
                     transaction.changeStatus(TransactionStatus.CONFIRMING);
                     transactionConfigurator.getTransactionRepository().update(transaction);
                     transaction.commit();
                     transactionConfigurator.getTransactionRepository().delete(transaction);
-
                 } else if (transaction.getStatus().equals(TransactionStatus.CANCELLING)
                         || transaction.getTransactionType().equals(TransactionType.ROOT)) {
-
+                    System.out.println("recoverErrorTransactions rollback..");
+                    System.out.println("transaction status is " + transaction.getStatus());
+                    System.out.println("transaction type is " + transaction.getTransactionType());
+                    //当前事务处于cancelling（可以理解）或当前是root事务？？
                     transaction.changeStatus(TransactionStatus.CANCELLING);
                     transactionConfigurator.getTransactionRepository().update(transaction);
                     transaction.rollback();

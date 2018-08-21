@@ -36,12 +36,14 @@ public class TradeOrderServiceProxy {
     */
     @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "record", cancelMethod = "record", transactionContextEditor = MethodTransactionContextEditor.class)
     public String record(TransactionContext transactionContext, CapitalTradeOrderDto tradeOrderDto) {
-        System.out.println(this);
+        System.out.println("TradeOrderServiceProxy capitalTradeOrderService record...");
+
         return capitalTradeOrderService.record(transactionContext, tradeOrderDto);
     }
 
     @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "record", cancelMethod = "record", transactionContextEditor = MethodTransactionContextEditor.class)
     public String record(TransactionContext transactionContext, RedPacketTradeOrderDto tradeOrderDto) {
+        System.out.println("TradeOrderServiceProxy redPacketTradeOrderService record...");
         return redPacketTradeOrderService.record(transactionContext, tradeOrderDto);
     }
 }
