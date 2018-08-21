@@ -21,7 +21,7 @@ public class TradeOrderServiceProxy {
     private static int init = 1;
 
     public TradeOrderServiceProxy() {
-        System.out.println(++init);
+        System.out.println(init++);
         System.out.println(this);
     }
 
