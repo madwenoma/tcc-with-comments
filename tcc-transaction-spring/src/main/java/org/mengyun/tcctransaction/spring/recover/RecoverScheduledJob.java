@@ -14,7 +14,7 @@ public class RecoverScheduledJob {
 
     private TransactionRecovery transactionRecovery;
 
-    private TransactionConfigurator transactionConfigurator;
+    private TransactionConfigurator transactionConfigurator;//事务恢复的一些设置，如事务缓存过期时间,
 
     private Scheduler scheduler;
 
@@ -30,7 +30,7 @@ public class RecoverScheduledJob {
 
             CronTriggerFactoryBean cronTrigger = new CronTriggerFactoryBean();
             cronTrigger.setBeanName("transactionRecoveryCronTrigger");
-            cronTrigger.setCronExpression(transactionConfigurator.getRecoverConfig().getCronExpression());
+            cronTrigger.setCronExpression(transactionConfigurator.getRecoverConfig().getCronExpression());//也只是用到了过期配置
             cronTrigger.setJobDetail(jobDetail.getObject());
             cronTrigger.afterPropertiesSet();
 

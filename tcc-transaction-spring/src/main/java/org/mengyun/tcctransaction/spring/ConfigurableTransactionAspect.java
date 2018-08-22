@@ -21,6 +21,8 @@ public class ConfigurableTransactionAspect extends CompensableTransactionAspect 
 
         CompensableTransactionInterceptor compensableTransactionInterceptor = new CompensableTransactionInterceptor();
         compensableTransactionInterceptor.setTransactionManager(transactionManager);
+
+        //比coordinator aspect多了一个getDelayCancelExceptions
         compensableTransactionInterceptor.setDelayCancelExceptions(transactionConfigurator.getRecoverConfig().getDelayCancelExceptions());
 
         this.setCompensableTransactionInterceptor(compensableTransactionInterceptor);

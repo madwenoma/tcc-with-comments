@@ -4,6 +4,7 @@
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
+    <!--使用cglig代理-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <bean id="springBeanFactory" class="org.mengyun.tcctransaction.spring.support.SpringBeanFactory"/>
@@ -22,8 +23,9 @@
         <property name="transactionConfigurator" ref="transactionConfigurator"/>
     </bean>
 
-    <task:annotation-driven/>
 
+    <!--定时任务开启
+    <task:annotation-driven/>
 
     <bean id="transactionRecovery" class="org.mengyun.tcctransaction.recover.TransactionRecovery">
         <property name="transactionConfigurator" ref="transactionConfigurator"/>
@@ -37,5 +39,5 @@
         <property name="transactionConfigurator" ref="transactionConfigurator"/>
         <property name="scheduler" ref="recoverScheduler"/>
     </bean>
-
+    -->
 </beans>

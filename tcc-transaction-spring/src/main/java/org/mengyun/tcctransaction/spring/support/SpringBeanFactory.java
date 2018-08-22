@@ -18,11 +18,18 @@ public class SpringBeanFactory implements BeanFactory, ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        FactoryBuilder.registerBeanFactory(this);
+        FactoryBuilder.registerBeanFactory(this);//设置默认SpringBeanFactory
     }
 
+    /**
+     * 判断class是否已经在spring容器里存在了
+     * @param clazz
+     * @return
+     */
     @Override
     public boolean isFactoryOf(Class clazz) {
+        //Return the bean instances that match the given object type (including subclasses),
+        // judging from either bean definitions or the value of getObjectType in the case of FactoryBeans.
         Map map = this.applicationContext.getBeansOfType(clazz);
         return map.size() > 0;
     }

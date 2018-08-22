@@ -1,6 +1,7 @@
 select id, self_user_id, opposite_user_id, merchant_order_no, amount, status, version from red_trade_order where merchant_order_no = 497039bb-9e66-4b09-9358-d7a0c0ef3c85
 
-insert into red_trade_order ( self_user_id, opposite_user_id, merchant_order_no, amount, status, version ) values ( 2000, 1000, 497039bb-9e66-4b09-9358-d7a0c0ef3c85, 12, draft, 1 ) 
+insert into red_trade_order ( self_user_id, opposite_user_id, merchant_order_no, amount, status, version )
+  values ( 2000, 1000, 497039bb-9e66-4b09-9358-d7a0c0ef3c85, 12, draft, 1 )
 
 select red_packet_account_id, balance_amount, user_id from red_red_packet_account where user_id = 2000
 

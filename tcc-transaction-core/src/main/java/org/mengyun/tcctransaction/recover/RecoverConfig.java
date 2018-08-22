@@ -9,8 +9,10 @@ public interface RecoverConfig {
 
     public int getMaxRetryCount();
 
+    //恢复有效时间
     public int getRecoverDuration();
 
+    //执行时间表达式
     public String getCronExpression();
 
     public Set<Class<? extends Exception>> getDelayCancelExceptions();

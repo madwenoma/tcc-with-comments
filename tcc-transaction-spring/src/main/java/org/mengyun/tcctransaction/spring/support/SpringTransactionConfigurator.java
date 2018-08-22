@@ -28,9 +28,11 @@ public class SpringTransactionConfigurator implements TransactionConfigurator {
     private TransactionManager transactionManager;
 
     public void init() {
+        //new了一个manager在ConfigurableCoordinatorAspect和 ConfigurableTransactionAspect中使用
         transactionManager = new TransactionManager();
-        transactionManager.setTransactionRepository(transactionRepository);
 
+        transactionManager.setTransactionRepository(transactionRepository);
+        //TODO spring xml里配置bean，容器启动时候调用，为什么要用双锁检查?//
         if (executorService == null) {
 
             synchronized (SpringTransactionConfigurator.class) {

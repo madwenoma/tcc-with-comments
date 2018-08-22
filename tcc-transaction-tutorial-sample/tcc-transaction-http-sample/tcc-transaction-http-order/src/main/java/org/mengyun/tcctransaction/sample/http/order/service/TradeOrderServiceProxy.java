@@ -18,12 +18,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TradeOrderServiceProxy {
-    private static int init = 1;
-
-    public TradeOrderServiceProxy() {
-        System.out.println(init++);
-        System.out.println(this);
-    }
 
     @Autowired
     CapitalTradeOrderService capitalTradeOrderService;
@@ -31,19 +25,21 @@ public class TradeOrderServiceProxy {
     @Autowired
     RedPacketTradeOrderService redPacketTradeOrderService;
 
-    /*the propagation need set Propagation.SUPPORTS,otherwise the recover doesn't work,
-      The default value is Propagation.REQUIRED, which means will begin new transaction when recover.
+    /**
+     * the propagation need set Propagation.SUPPORTS,otherwise the recover doesn't work,
+     * The default value is Propagation.REQUIRED, which means will begin new transaction when recover.
+     * 这里是个关键:
+     * 这个record方法，注解里confirm和cancel method都是record自己，这个是个远程方法
+     * 无论是confirm还是cancel都是去远程服务执行，而record本身是将这些信息（事务上线文，数据）传递过去
+     * tcc事务框架，事务进行commit和rollback操作都是调用这个方法
     */
     @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "record", cancelMethod = "record", transactionContextEditor = MethodTransactionContextEditor.class)
     public String record(TransactionContext transactionContext, CapitalTradeOrderDto tradeOrderDto) {
-        System.out.println("TradeOrderServiceProxy capitalTradeOrderService record...");
-
         return capitalTradeOrderService.record(transactionContext, tradeOrderDto);
     }
 
     @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "record", cancelMethod = "record", transactionContextEditor = MethodTransactionContextEditor.class)
     public String record(TransactionContext transactionContext, RedPacketTradeOrderDto tradeOrderDto) {
-        System.out.println("TradeOrderServiceProxy redPacketTradeOrderService record...");
         return redPacketTradeOrderService.record(transactionContext, tradeOrderDto);
     }
 }

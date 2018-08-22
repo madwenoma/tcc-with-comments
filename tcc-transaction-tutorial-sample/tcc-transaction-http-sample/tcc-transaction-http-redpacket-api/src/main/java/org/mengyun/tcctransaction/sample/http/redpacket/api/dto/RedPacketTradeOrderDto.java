@@ -10,8 +10,10 @@ public class RedPacketTradeOrderDto implements Serializable {
 
     private static final long serialVersionUID = 4747014387277477558L;
 
+    //付款
     private long selfUserId;
 
+    //收款
     private long oppositeUserId;
 
     private String orderTitle;

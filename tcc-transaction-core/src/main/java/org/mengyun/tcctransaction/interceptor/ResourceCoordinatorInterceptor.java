@@ -13,17 +13,22 @@ import org.mengyun.tcctransaction.api.TransactionXid;
 import org.mengyun.tcctransaction.support.FactoryBuilder;
 import org.mengyun.tcctransaction.utils.CompensableMethodUtils;
 import org.mengyun.tcctransaction.utils.ReflectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
 /**
  * Created by changmingxie on 11/8/15.
+ * 在 Try 阶段，添加参与者到事务中。当事务上下文不存在时，进行创建Participant
+ * 这是协调者拦截器的用处，该拦截器执行是在可补偿拦截器之前，定义了Order顺序是+1的：Ordered.HIGHEST_PRECEDENCE + 1;
  */
 public class ResourceCoordinatorInterceptor {
 
+    Logger logger = LoggerFactory.getLogger(ResourceCoordinatorInterceptor.class);
     private TransactionManager transactionManager;
 
-
+    //configuration里new了manager并set到这里
     public void setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
@@ -68,21 +73,15 @@ public class ResourceCoordinatorInterceptor {
 
         Class targetClass = ReflectionUtils.getDeclaringType(pjp.getTarget().getClass(), method.getName(), method.getParameterTypes());
 
-        InvocationContext confirmInvocation = new InvocationContext(targetClass,
-                confirmMethodName,
-                method.getParameterTypes(), pjp.getArgs());
+        InvocationContext confirmInvocation =
+                new InvocationContext(targetClass, confirmMethodName, method.getParameterTypes(), pjp.getArgs());
 
-        InvocationContext cancelInvocation = new InvocationContext(targetClass,
-                cancelMethodName,
-                method.getParameterTypes(), pjp.getArgs());
+        InvocationContext cancelInvocation =
+                new InvocationContext(targetClass, cancelMethodName, method.getParameterTypes(), pjp.getArgs());
 
         Participant participant =
-                new Participant(
-                        xid,
-                        confirmInvocation,
-                        cancelInvocation,
-                        compensable.transactionContextEditor());
-
+                new Participant(xid, confirmInvocation, cancelInvocation, compensable.transactionContextEditor());
+        logger.info(participant.toString());
         transactionManager.enlistParticipant(participant);
 
     }

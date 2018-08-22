@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class CachableTransactionRepository implements TransactionRepository {
 
-    private int expireDuration = 120;
+    private int expireDuration = 120;//cache过期时间
     //guava 线程安全cache
     private Cache<Xid, Transaction> transactionXidCompensableTransactionCache;
 

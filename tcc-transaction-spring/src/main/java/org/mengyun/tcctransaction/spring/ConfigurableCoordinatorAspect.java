@@ -17,7 +17,9 @@ public class ConfigurableCoordinatorAspect extends ResourceCoordinatorAspect imp
     public void init() {
 
         ResourceCoordinatorInterceptor resourceCoordinatorInterceptor = new ResourceCoordinatorInterceptor();
+        //从transactionConfigurator拿到transaction manager，和ConfigurableTransactionAspect 使用的是同一个manager
         resourceCoordinatorInterceptor.setTransactionManager(transactionConfigurator.getTransactionManager());
+
         this.setResourceCoordinatorInterceptor(resourceCoordinatorInterceptor);
     }
 

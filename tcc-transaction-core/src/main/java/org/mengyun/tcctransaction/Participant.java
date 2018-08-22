@@ -1,5 +1,6 @@
 package org.mengyun.tcctransaction;
 
+import com.google.common.base.Objects;
 import org.mengyun.tcctransaction.api.TransactionContext;
 import org.mengyun.tcctransaction.api.TransactionContextEditor;
 import org.mengyun.tcctransaction.api.TransactionStatus;
@@ -71,12 +72,10 @@ public class Participant implements Serializable {
 
     @Override
     public String toString() {
-        return "Participant{" +
-                "xid=" + xid +
-                ", confirmInvocationContext=" + confirmInvocationContext +
-                ", cancelInvocationContext=" + cancelInvocationContext +
-                ", terminator=" + terminator +
-                ", transactionContextEditorClass=" + transactionContextEditorClass +
-                '}';
+        return Objects.toStringHelper(this)
+                .add("xid", xid)
+                .add("confirmInvocationContext", confirmInvocationContext)
+                .add("cancelInvocationContext", cancelInvocationContext)
+                .toString();
     }
 }

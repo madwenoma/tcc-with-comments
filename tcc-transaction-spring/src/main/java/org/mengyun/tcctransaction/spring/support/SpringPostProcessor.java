@@ -19,6 +19,7 @@ public class SpringPostProcessor implements ApplicationListener<ContextRefreshed
         ApplicationContext applicationContext = contextRefreshedEvent.getApplicationContext();
 
         if (applicationContext.getParent() == null) {
+            System.out.println("SpringPostProcessor applicationContext.getParent() is null");
             FactoryBuilder.registerBeanFactory(applicationContext.getBean(BeanFactory.class));
         }
     }

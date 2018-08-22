@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by changmingxie on 11/10/15.
+ * 事务恢复逻辑
  */
 public class TransactionRecovery {
 
@@ -23,6 +24,7 @@ public class TransactionRecovery {
 
     private TransactionConfigurator transactionConfigurator;
 
+    //是通过RecoverScheduledJob里obDetail.setTargetMethod("startRecover");调用
     public void startRecover() {
 
         List<Transaction> transactions = loadErrorTransactions();
@@ -37,30 +39,32 @@ public class TransactionRecovery {
 
         TransactionRepository transactionRepository = transactionConfigurator.getTransactionRepository();
         RecoverConfig recoverConfig = transactionConfigurator.getRecoverConfig();
-
+        //配置的duration是5秒，那就找出5秒之前进行过更新的所有事务
+        //TODO  为什么这些事务是error transaction
+        //存在，未被删除，就是需要处理?
         return transactionRepository.findAllUnmodifiedSince(new Date(currentTimeInMillis - recoverConfig.getRecoverDuration() * 1000));
     }
 
     private void recoverErrorTransactions(List<Transaction> transactions) {
-        System.out.println("recoverErrorTransactions");
+        System.out.println("recoverErrorTransactions transactions ");
 
         for (Transaction transaction : transactions) {
-            //超过最大重试次数 不再尝试恢复
-            if (transaction.getRetriedCount() > transactionConfigurator.getRecoverConfig().getMaxRetryCount()) {
+            //超过最大重试次数 不再尝试恢复，抛出异常需人工恢复
+            int maxRetryCount = transactionConfigurator.getRecoverConfig().getMaxRetryCount();
+            if (transaction.getRetriedCount() > maxRetryCount) {
 
                 logger.error(String.format("recover failed with max retry count,will not try again. txid:%s, status:%s,retried count:%d,transaction content:%s", transaction.getXid(), transaction.getStatus().getId(), transaction.getRetriedCount(), JSON.toJSONString(transaction)));
                 continue;
             }
 
             //分支事务超时
+            int recoverDuration = transactionConfigurator.getRecoverConfig().getRecoverDuration();
+
             if (transaction.getTransactionType().equals(TransactionType.BRANCH)
-                    && (transaction.getCreateTime().getTime() +
-                    transactionConfigurator.getRecoverConfig().getMaxRetryCount() *
-                            transactionConfigurator.getRecoverConfig().getRecoverDuration() * 1000
-                    > System.currentTimeMillis())) {
+                    && (transaction.getCreateTime().getTime() + maxRetryCount * recoverDuration * 1000 > System.currentTimeMillis())) { //TODO 事务尝试还未超时？不到恢复的时间？
                 continue;
             }
-            
+
             try {
                 transaction.addRetriedCount();
                 //当前事务confirming阶段 尝试提交
@@ -72,14 +76,14 @@ public class TransactionRecovery {
                     transactionConfigurator.getTransactionRepository().delete(transaction);
                 } else if (transaction.getStatus().equals(TransactionStatus.CANCELLING)
                         || transaction.getTransactionType().equals(TransactionType.ROOT)) {
-                    System.out.println("recoverErrorTransactions rollback..");
-                    System.out.println("transaction status is " + transaction.getStatus());
-                    System.out.println("transaction type is " + transaction.getTransactionType());
-                    //当前事务处于cancelling（可以理解）或当前是root事务？？
+                    //TODO ROOT事务为什么要rollabck？延迟失败处理？在main线程里断点rollback，job线程，就会进入此处进行rollback
+                    logger.info("recoverErrorTransactions rollback..");
+                    logger.info("transaction status is " + transaction.getStatus());
+                    logger.info("transaction type is " + transaction.getTransactionType());
                     transaction.changeStatus(TransactionStatus.CANCELLING);
                     transactionConfigurator.getTransactionRepository().update(transaction);
                     transaction.rollback();
-                    transactionConfigurator.getTransactionRepository().delete(transaction);
+                    transactionConfigurator.getTransactionRepository().delete(transaction);//事务正常完毕，是不是都是会delete掉，存在的都是有问题的
                 }
 
             } catch (Throwable throwable) {
