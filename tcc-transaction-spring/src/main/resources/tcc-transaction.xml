@@ -24,7 +24,7 @@
     </bean>
 
 
-    <!--定时任务开启
+    <!--定时任务开启-->
     <task:annotation-driven/>
 
     <bean id="transactionRecovery" class="org.mengyun.tcctransaction.recover.TransactionRecovery">
@@ -39,5 +39,5 @@
         <property name="transactionConfigurator" ref="transactionConfigurator"/>
         <property name="scheduler" ref="recoverScheduler"/>
     </bean>
-    -->
+
 </beans>

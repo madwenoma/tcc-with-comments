@@ -93,7 +93,7 @@ public class Transaction implements Serializable {
 
 
     public void commit() {
-        System.out.println("commit,participants size is {}" + participants == null ? 0 : participants.size());
+        System.out.println("Transaction commit,participants size is " + participants.size());
         for (Participant participant : participants) {
             System.out.println("participant info:{}" + participant);
             participant.commit();

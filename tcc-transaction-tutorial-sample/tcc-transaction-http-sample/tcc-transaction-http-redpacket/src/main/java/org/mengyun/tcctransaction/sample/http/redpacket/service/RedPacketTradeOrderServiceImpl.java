@@ -35,6 +35,7 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
      * try阶段，
      * 1.插入交易记录
      * 2.预扣除账户红包（这里的预的含义是数额减少，但交易记录里的状态是DRAFT，等到confirm阶段更新）
+     *
      * @param transactionContext
      * @param tradeOrderDto
      * @return
@@ -89,6 +90,7 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
      * confirm阶段，
      * 1.更新交易记录confirm状态，
      * 2.给收款方增加红包余额（可能作者认为，这是红包服务整个操作流程的最后一环）
+     *
      * @param transactionContext
      * @param tradeOrderDto
      */
@@ -117,11 +119,13 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
 
             redPacketAccountRepository.save(transferToAccount);
         }
+//        int x = 1 / 0;
         logger.info("redpacket confirm end");
     }
 
     /**
      * cancle阶段，回退try阶段扣除的红包
+     *
      * @param transactionContext
      * @param tradeOrderDto
      */

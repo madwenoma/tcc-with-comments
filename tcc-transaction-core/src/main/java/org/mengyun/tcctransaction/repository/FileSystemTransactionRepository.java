@@ -20,6 +20,8 @@ import java.util.List;
 /**
  * Created by changming.xie on 2/24/16.
  * this repository is suitable for single node, not for cluster nodes
+ *
+ * 和 ZooKeeperTransactionRepository，区别主要在于不支持乐观锁更新
  */
 public class FileSystemTransactionRepository extends CachableTransactionRepository {
 

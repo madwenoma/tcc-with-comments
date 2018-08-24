@@ -46,7 +46,7 @@ public class TransactionRecovery {
     }
 
     private void recoverErrorTransactions(List<Transaction> transactions) {
-        System.out.println("recoverErrorTransactions transactions ");
+        logger.info("recoverErrorTransactions transactions " + new Date());
 
         for (Transaction transaction : transactions) {
             //超过最大重试次数 不再尝试恢复，抛出异常需人工恢复
@@ -72,6 +72,7 @@ public class TransactionRecovery {
 
                     transaction.changeStatus(TransactionStatus.CONFIRMING);
                     transactionConfigurator.getTransactionRepository().update(transaction);
+                    logger.info("recoverErrorTransactions commit...");
                     transaction.commit();
                     transactionConfigurator.getTransactionRepository().delete(transaction);
                 } else if (transaction.getStatus().equals(TransactionStatus.CANCELLING)

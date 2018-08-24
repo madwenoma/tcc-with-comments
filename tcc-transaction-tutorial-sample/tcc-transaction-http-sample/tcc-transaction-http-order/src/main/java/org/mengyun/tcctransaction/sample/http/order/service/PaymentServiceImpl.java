@@ -55,7 +55,7 @@ public class PaymentServiceImpl {
         //红包service try
         String result2 = tradeOrderServiceProxy.record(null, buildRedPacketTradeOrderDto(order));
 
-        int x = 1 / 0;
+//        int x = 1 / 0;
     }
 
     public void confirmMakePayment(Order order, BigDecimal redPacketPayAmount, BigDecimal capitalPayAmount) {

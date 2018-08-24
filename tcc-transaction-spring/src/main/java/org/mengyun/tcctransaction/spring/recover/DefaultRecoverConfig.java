@@ -18,6 +18,9 @@ public class DefaultRecoverConfig implements RecoverConfig {
 
     private int recoverDuration = 120; //120 seconds
 
+    //cronExpression，定时任务 cron 表达式为 "0 */1 * * * ?"，每分钟执行一次。如果你希望定时任务执行的更频繁，
+    // 可以修改 cron 表达式，例如 0/30 * * * * ?，每 30 秒执行一次。
+
     private String cronExpression = "0 */1 * * * ?";
 
     private int asyncTerminateThreadPoolSize = 1024;
