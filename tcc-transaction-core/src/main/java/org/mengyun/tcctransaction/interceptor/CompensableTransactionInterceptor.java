@@ -60,7 +60,7 @@ public class CompensableTransactionInterceptor {
         }
 
         MethodType methodType = CompensableMethodUtils.calculateMethodType(propagation, isTransactionActive, transactionContext);
-        logger.info("method type is" + methodType);
+        logger.info("method type is:" + methodType);
         switch (methodType) {
             case ROOT:
                 return rootMethodProceed(pjp, asyncConfirm, asyncCancel);
@@ -71,7 +71,7 @@ public class CompensableTransactionInterceptor {
         }
     }
 
-
+    //根事务直接执行，不分阶段，是事务的入口
     private Object rootMethodProceed(ProceedingJoinPoint pjp, boolean asyncConfirm, boolean asyncCancel) throws Throwable {
         logger.info("rootMethodProceed begin...");
         Object returnValue = null;
@@ -106,8 +106,9 @@ public class CompensableTransactionInterceptor {
         return returnValue;
     }
 
+    //提供者事务有三个阶段
     private Object providerMethodProceed(ProceedingJoinPoint pjp, TransactionContext transactionContext, boolean asyncConfirm, boolean asyncCancel) throws Throwable {
-        logger.info("providerMethodProceed begin...");
+        logger.info("providerMethodProceed begin...事务状态是:" + TransactionStatus.valueOf(transactionContext.getStatus()));
         Transaction transaction = null;
         try {
 

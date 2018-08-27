@@ -6,7 +6,7 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[sample-http-redpacket]%d %-5p [%c] %m%n"/>
+            <param name="ConversionPattern" value="[redpacket]%d %-5p [%c] %m%n"/>
         </layout>
     </appender>
 

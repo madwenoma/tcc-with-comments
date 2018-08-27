@@ -7,6 +7,8 @@ import org.mengyun.tcctransaction.OptimisticLockException;
 import org.mengyun.tcctransaction.Transaction;
 import org.mengyun.tcctransaction.TransactionRepository;
 import org.mengyun.tcctransaction.api.TransactionXid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.transaction.xa.Xid;
 import java.util.Date;
@@ -18,13 +20,14 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class CachableTransactionRepository implements TransactionRepository {
 
+    private Logger logger = LoggerFactory.getLogger(CachableTransactionRepository.class);
     private int expireDuration = 120;//cache过期时间
     //guava 线程安全cache
     private Cache<Xid, Transaction> transactionXidCompensableTransactionCache;
 
     @Override
     public int create(Transaction transaction) {
-        System.out.println("TransactionRepository create:" + transaction.toSimpleString());
+        logger.info("TransactionRepository create:" + transaction.toSimpleString());
         int result = doCreate(transaction);
         if (result > 0) {
             putToCache(transaction);
@@ -34,7 +37,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
 
     @Override
     public int update(Transaction transaction) {
-        System.out.println("TransactionRepository update:" + transaction.toSimpleString());
+        logger.info("TransactionRepository update:" + transaction.toSimpleString());
         int result = 0;
 
         try {
@@ -55,7 +58,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
 
     @Override
     public int delete(Transaction transaction) {
-        System.out.println("TransactionRepository delete:" + transaction.toSimpleString());
+        logger.info("TransactionRepository delete:" + transaction.toSimpleString());
         int result = 0;
 
         try {

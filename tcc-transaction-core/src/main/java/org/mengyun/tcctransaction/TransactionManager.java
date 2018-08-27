@@ -40,7 +40,7 @@ public class TransactionManager {
      * @return
      */
     public Transaction begin() {
-
+        logger.info("开启一个根事务");
         Transaction transaction = new Transaction(TransactionType.ROOT);
         transactionRepository.create(transaction);
         registerTransaction(transaction);
@@ -54,10 +54,10 @@ public class TransactionManager {
      * @return
      */
     public Transaction propagationNewBegin(TransactionContext transactionContext) {
-
-        Transaction transaction = new Transaction(transactionContext);
+        logger.info("传播新事务begin," + transactionContext);
+        Transaction transaction = new Transaction(transactionContext);//new出来的transaction
         transactionRepository.create(transaction);
-
+        logger.info("创建Transaction " + transaction);
         registerTransaction(transaction);
         return transaction;
     }
@@ -70,7 +70,10 @@ public class TransactionManager {
      * @throws NoExistedTransactionException
      */
     public Transaction propagationExistBegin(TransactionContext transactionContext) throws NoExistedTransactionException {
+        logger.info("传播已存在事务begin," + transactionContext);
+
         Transaction transaction = transactionRepository.findByXid(transactionContext.getXid());
+        logger.info("根据xid查找到的Transaction： " + transaction);
 
         if (transaction != null) {
             transaction.changeStatus(TransactionStatus.valueOf(transactionContext.getStatus()));//更改事务状态，如trying改为confirming，confirming改为cancling
@@ -180,6 +183,10 @@ public class TransactionManager {
         return null;
     }
 
+    /**
+     * 当前有事务
+     * @return
+     */
     public boolean isTransactionActive() {
         Deque<Transaction> transactions = CURRENT.get();
         return transactions != null && !transactions.isEmpty();
@@ -191,7 +198,7 @@ public class TransactionManager {
         if (CURRENT.get() == null) {
             CURRENT.set(new LinkedList<Transaction>());
         }
-        System.out.println("registerTransaction LinkedList size:" + CURRENT.get().size());
+        logger.info("registerTransaction LinkedList size:" + CURRENT.get().size());
         CURRENT.get().push(transaction);
     }
 

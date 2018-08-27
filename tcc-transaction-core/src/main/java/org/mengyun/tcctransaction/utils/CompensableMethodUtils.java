@@ -6,6 +6,8 @@ import org.mengyun.tcctransaction.api.Compensable;
 import org.mengyun.tcctransaction.api.Propagation;
 import org.mengyun.tcctransaction.api.TransactionContext;
 import org.mengyun.tcctransaction.common.MethodType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
@@ -13,6 +15,7 @@ import java.lang.reflect.Method;
  * Created by changmingxie on 11/21/15.
  */
 public class CompensableMethodUtils {
+    private static Logger logger = LoggerFactory.getLogger(CompensableMethodUtils.class);
 
     public static Method getCompensableMethod(ProceedingJoinPoint pjp) {
         Method method = ((MethodSignature) (pjp.getSignature())).getMethod();
@@ -28,14 +31,16 @@ public class CompensableMethodUtils {
     }
 
     public static MethodType calculateMethodType(Propagation propagation, boolean isTransactionActive, TransactionContext transactionContext) {
-        //REQUIRED且当前threadlocal里有事务且事务上下文不为空
+        //REQUIRED且当前threadlocal里没有事务且事务上下文为空
         //或 事务隔离级别为REQUIRES_NEW
         //以上两种是root事务
+        logger.info("propagation:{},isTransactionActive:{}", propagation, isTransactionActive);
+        logger.info("transactionContext is null:{}", transactionContext == null);
         if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && transactionContext == null) ||
                 propagation.equals(Propagation.REQUIRES_NEW)) {
             return MethodType.ROOT;
         } else if ((propagation.equals(Propagation.REQUIRED) || propagation.equals(Propagation.MANDATORY)) && !isTransactionActive && transactionContext != null) {
-            //REQUIRED或MANDATORY隔离级别，且当前threadlocal里有事务且事务上下文不为空
+            //REQUIRED或MANDATORY隔离级别，且当前threadlocal里没有事务且事务上下文不为空
             return MethodType.PROVIDER;
         } else {
             //其他返回NORMAL TODO 其他都包含哪些情况

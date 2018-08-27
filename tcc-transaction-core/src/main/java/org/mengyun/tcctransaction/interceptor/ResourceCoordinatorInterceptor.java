@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 /**
  * Created by changmingxie on 11/8/15.
  * 在 Try 阶段，添加参与者到事务中。当事务上下文不存在时，进行创建Participant
- * 这是协调者拦截器的用处，该拦截器执行是在可补偿拦截器之前，定义了Order顺序是+1的：Ordered.HIGHEST_PRECEDENCE + 1;
+ * 这是协调者拦截器的用处，该拦截器执行是在可补偿拦截器之，定义了Order顺序是+1的：Ordered.HIGHEST_PRECEDENCE + 1;
  */
 public class ResourceCoordinatorInterceptor {
 
