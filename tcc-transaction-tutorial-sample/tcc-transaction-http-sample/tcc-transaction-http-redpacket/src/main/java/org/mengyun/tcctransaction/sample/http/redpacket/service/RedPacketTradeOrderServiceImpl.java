@@ -119,7 +119,7 @@ public class RedPacketTradeOrderServiceImpl implements RedPacketTradeOrderServic
 
             redPacketAccountRepository.save(transferToAccount);
         }
-        int x = 1 / 0;
+//        int x = 1 / 0;
         logger.info("redpacket confirm end");
     }
 

@@ -48,6 +48,9 @@ public class CompensableTransactionInterceptor {
         Compensable compensable = method.getAnnotation(Compensable.class);
         Propagation propagation = compensable.propagation();
         TransactionContext transactionContext = FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs());
+        logger.info("pjp.getTarget():" + pjp.getTarget());
+        logger.info("method:" + method);
+        logger.info("pjp.getArgs():" + pjp.getArgs());
         logger.info("transactionContext is " + transactionContext);
         boolean asyncConfirm = compensable.asyncConfirm();
 
