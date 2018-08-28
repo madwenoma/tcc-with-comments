@@ -12,7 +12,7 @@
     <bean class="org.mengyun.tcctransaction.spring.recover.DefaultRecoverConfig">
         <property name="maxRetryCount" value="5"/>
         <property name="recoverDuration" value="60"/>
-        <property name="cronExpression" value="0/5 * * * * ?"/>
+        <property name="cronExpression" value="0/30 * * * * ?"/>
     </bean>
 
 

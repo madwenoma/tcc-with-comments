@@ -4,6 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Compensable:可补偿
@@ -11,6 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
  */
 @Aspect
 public abstract class CompensableTransactionAspect {
+    Logger logger = LoggerFactory.getLogger(CompensableTransactionAspect.class);
 
     private CompensableTransactionInterceptor compensableTransactionInterceptor;
 
@@ -25,9 +28,9 @@ public abstract class CompensableTransactionAspect {
 
     @Around("compensableService()")
     public Object interceptCompensableMethod(ProceedingJoinPoint pjp) throws Throwable {
-        System.out.println("CompensableTransactionAspect around....");
-        Object object =  compensableTransactionInterceptor.interceptCompensableMethod(pjp);
-        System.out.println("CompensableTransactionAspect end");
+        logger.info("CompensableTransactionAspect around....");
+        Object object = compensableTransactionInterceptor.interceptCompensableMethod(pjp);
+        logger.info("CompensableTransactionAspect end");
         return object;
     }
 

@@ -4,6 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Coordinator：协调
@@ -11,7 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
  */
 @Aspect
 public abstract class ResourceCoordinatorAspect {
-
+    Logger logger = LoggerFactory.getLogger(ResourceCoordinatorAspect.class);
     private ResourceCoordinatorInterceptor resourceCoordinatorInterceptor;
 
     @Pointcut("@annotation(org.mengyun.tcctransaction.api.Compensable)")
@@ -21,9 +23,9 @@ public abstract class ResourceCoordinatorAspect {
 
     @Around("transactionContextCall()")
     public Object interceptTransactionContextMethod(ProceedingJoinPoint pjp) throws Throwable {
-        System.out.println("ResourceCoordinatorAspect around....");
-        Object object =  resourceCoordinatorInterceptor.interceptTransactionContextMethod(pjp);
-        System.out.println("ResourceCoordinatorAspect end");
+        logger.info("ResourceCoordinatorAspect around....");
+        Object object = resourceCoordinatorInterceptor.interceptTransactionContextMethod(pjp);
+        logger.info("ResourceCoordinatorAspect end");
         return object;
     }
 

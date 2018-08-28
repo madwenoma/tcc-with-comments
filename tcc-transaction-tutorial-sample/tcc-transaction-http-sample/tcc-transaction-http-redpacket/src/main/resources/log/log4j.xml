@@ -6,19 +6,19 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[redpacket]%d %-5p [%c] %m%n"/>
+            <param name="ConversionPattern" value="[red][%t]%d{ABSOLUTE} %-5p [%c{1}:%M]  %m%n"/>
         </layout>
     </appender>
 
-    <appender name="asyncAppender" class="org.apache.log4j.AsyncAppender">
-        <param name="BufferSize" value="4096" />
-        <param name="Blocking" value="false"/>
-        <appender-ref ref="CONSOLE" />
-    </appender>
+    <!--<appender name="asyncAppender" class="org.apache.log4j.AsyncAppender">-->
+        <!--<param name="BufferSize" value="4096" />-->
+        <!--<param name="Blocking" value="false"/>-->
+        <!--<appender-ref ref="CONSOLE" />-->
+    <!--</appender>-->
 
     <root>
         <level value="INFO"/>
-        <appender-ref ref="asyncAppender"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 

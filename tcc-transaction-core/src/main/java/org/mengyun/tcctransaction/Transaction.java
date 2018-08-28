@@ -5,6 +5,8 @@ import org.mengyun.tcctransaction.api.TransactionContext;
 import org.mengyun.tcctransaction.api.TransactionStatus;
 import org.mengyun.tcctransaction.api.TransactionXid;
 import org.mengyun.tcctransaction.common.TransactionType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.transaction.xa.Xid;
 import java.io.Serializable;
@@ -18,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by changmingxie on 10/26/15.
  */
 public class Transaction implements Serializable {
+    private Logger logger = LoggerFactory.getLogger(Transaction.class);
     private static final long serialVersionUID = 7291423944314337931L;
 
     private TransactionXid xid;
@@ -93,18 +96,18 @@ public class Transaction implements Serializable {
 
 
     public void commit() {
-        System.out.println("Transaction commit,participants size is " + participants.size());
+//        logger.info("Transaction commit,participants size is " + participants.size());
         for (Participant participant : participants) {
-//            System.out.println("participant info:{}" + participant);
+//            logger.info("participant info:{}" + participant);
             participant.commit();
         }
     }
 
     public void rollback() {
-//        System.out.println("rolback,participants size is {}" + participants == null ? 0 : participants.size());
-        System.out.println("Transaction rollback...");
+//        logger.info("rolback,participants size is {}" + participants == null ? 0 : participants.size());
+        logger.info("Transaction rollback...");
         for (Participant participant : participants) {
-            System.out.println("participant cancel-method:" + participant.getCancelInvocationContext());
+            logger.info("participant cancel-method:" + participant.getCancelInvocationContext());
             participant.rollback();
         }
     }

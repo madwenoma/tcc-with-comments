@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 /**
  * Created by changmingxie on 11/8/15.
  * 在 Try 阶段，添加参与者到事务中。当事务上下文不存在时，进行创建Participant
- * 这是协调者拦截器的用处，该拦截器执行是在可补偿拦截器之，定义了Order顺序是+1的：Ordered.HIGHEST_PRECEDENCE + 1;
+ * 这是协调者拦截器的用处，该拦截器执行是在可补偿拦截器之后，定义了Order顺序是+1的：Ordered.HIGHEST_PRECEDENCE + 1;
  */
 public class ResourceCoordinatorInterceptor {
 
@@ -65,7 +65,9 @@ public class ResourceCoordinatorInterceptor {
         String cancelMethodName = compensable.cancelMethod();
 
         Transaction transaction = transactionManager.getCurrentTransaction();
-        //生成参与者子事务id
+        //生成参与者子事务id，参与者都是子事务（包含本地和远程），所以xid都是新生成。
+        //如果代码在order 事务发起段执行，生成的远程子事务id，会通过事务上线文（TransactionContext）传给远端服务
+        //如果代码在redpacket和capital项目执行，这里生成的子事务xid似乎没什么用
         TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());
 
         if (FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs()) == null) {
@@ -81,7 +83,8 @@ public class ResourceCoordinatorInterceptor {
 
         InvocationContext cancelInvocation =
                 new InvocationContext(targetClass, cancelMethodName, method.getParameterTypes(), pjp.getArgs());
-
+        //这里封装成参与者Participant
+        //如果是order项目，事务发起者，commit或callback阶段，会对3个参与者
         Participant participant =
                 new Participant(xid, confirmInvocation, cancelInvocation, compensable.transactionContextEditor());
         logger.info(participant.toString());

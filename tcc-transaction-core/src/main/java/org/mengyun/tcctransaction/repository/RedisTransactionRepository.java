@@ -50,7 +50,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
     @Override
     protected int doCreate(final Transaction transaction) {
-
+        logger.info("doCreate transaction id " + transaction.getXid());
 
         try {
             Long statusCode = RedisHelper.execute(jedisPool, new JedisCallback<Long>() {
@@ -80,6 +80,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
     @Override
     protected int doUpdate(final Transaction transaction) {
+        logger.info("doUpdate transaction id " + transaction.getXid());
 
         try {
 
@@ -113,6 +114,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
     @Override
     protected int doDelete(final Transaction transaction) {
+        logger.info("doUpdate transaction id " + transaction.getXid());
         try {
 
             Long result = RedisHelper.execute(jedisPool, new JedisCallback<Long>() {
@@ -131,6 +133,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
     @Override
     protected Transaction doFindOne(final Xid xid) {
+        logger.info("doUpdate transaction id " + xid);
 
         try {
             Long startTime = System.currentTimeMillis();
